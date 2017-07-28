@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{9E3F10BA-9F84-46F3-BED4-49F3CC9BB8CA}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FinanceManager.Contract</RootNamespace>
+    <AssemblyName>FinanceManager.Contract</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ValueObjects">
+      <HintPath>..\..\Common\CommonItems\ValueObjects\bin\Debug\ValueObjects.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Commands\AddFinancialTransactionCommand.cs" />
+    <Compile Include="Commands\AddFinancialAccountCommand.cs" />
+    <Compile Include="Commands\ICommand.cs" />
+    <Compile Include="Commands\RemoveFinancialTransactionCommand.cs" />
+    <Compile Include="Commands\RemoveFinancialAccountCommand.cs" />
+    <Compile Include="Commands\UpdateFinancialTransactionCommand.cs" />
+    <Compile Include="Commands\UpdateFinancialAccountCommand.cs" />
+    <Compile Include="Dto\FinancialAccountDto.cs" />
+    <Compile Include="Dto\FinancialTransactionDto.cs" />
+    <Compile Include="Events\FinancialTransactionChangedEvent.cs" />
+    <Compile Include="Events\FinancialAccountChangedEvent.cs" />
+    <Compile Include="Events\FinancialTransactionRemovedEvent.cs" />
+    <Compile Include="Events\FinancialTransactionAddedEvent.cs" />
+    <Compile Include="Events\FinancialAccountAddedEvent.cs" />
+    <Compile Include="Events\FinancialAccountRemovedEvent.cs" />
+    <Compile Include="Events\IDomainEvent.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Queries\FindFinancialTransactionsByDateQuery.cs" />
+    <Compile Include="Queries\FindFinancialAccountsBySearchTextQuery.cs" />
+    <Compile Include="Queries\GetAllFinancialAccountsQuery.cs" />
+    <Compile Include="Queries\GetFinancialAccountBalanceQuery.cs" />
+    <Compile Include="Queries\GetFinancialTransactionByIdQuery.cs" />
+    <Compile Include="Queries\GetFinancialTransactionsByAccountIdQuery.cs" />
+    <Compile Include="Queries\GetFinancialAccountByIdQuery.cs" />
+    <Compile Include="Queries\IQuery.cs" />
+    <Compile Include="Services\ICommandService.cs" />
+    <Compile Include="Services\IQueryService.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

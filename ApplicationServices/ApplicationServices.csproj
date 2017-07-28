@@ -1,0 +1,117 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{BB603008-D4C1-4E13-B11B-E70797BAFB5C}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ApplicationServices</RootNamespace>
+    <AssemblyName>ApplicationServices</AssemblyName>
+    <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.1.0\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+    <Reference Include="ValueObjects">
+      <HintPath>..\..\Common\CommonItems\ValueObjects\bin\Debug\ValueObjects.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="CommandHandlers\AddFinancialTransactionCommandHandler.cs" />
+    <Compile Include="CommandHandlers\RemoveFinancialTransactionCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFinancialTransactionCommandHandler.cs" />
+    <Compile Include="CommandHandlers\UpdateFinancialAccountCommandHandler.cs" />
+    <Compile Include="CommandHandlers\AddFinancialAccountCommandHandler.cs" />
+    <Compile Include="CommandHandlers\ICommandHandler.cs" />
+    <Compile Include="CommandHandlers\IDomainEventStore.cs" />
+    <Compile Include="CommandHandlers\RemoveFinancialAccountCommandHandler.cs" />
+    <Compile Include="CrossCuttingConcerns\CachingQueryHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\IDomainEventProcessor.cs" />
+    <Compile Include="CrossCuttingConcerns\DomainEventStore.cs" />
+    <Compile Include="CrossCuttingConcerns\IExternalMessagePublisher.cs" />
+    <Compile Include="CrossCuttingConcerns\ILogger.cs" />
+    <Compile Include="CrossCuttingConcerns\LoggingCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\NotifyOnRequestCompletedCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\NotifyOnRequestIssuedCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\PerformanceMetricsCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\ToWcfFaultTranslatorCommandHandlerDecorator.cs" />
+    <Compile Include="CrossCuttingConcerns\ValidationCommandHandlerDecorator.cs" />
+    <Compile Include="EventHandlers\IDomainEventHandler.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialTransactionByIdCache.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialTransactionsByAccountIdCache.cs" />
+    <Compile Include="EventHandlers\InvalidateGetAllFinancialAccountsCache.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialAccountBalanceCache.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialAccountByIdCache.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="QueryHandlers\FindFinancialTransactionsByDateQueryHandler.cs" />
+    <Compile Include="QueryHandlers\FindFinancialAccountsBySearchTextQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetAllFinancialAccountsQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetFinancialAccountBalanceQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetFinancialTransactionByIdQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetFinancialTransactionsByAccountIdQueryHandler.cs" />
+    <Compile Include="QueryHandlers\GetFinancialAccountByIdQueryHandler.cs" />
+    <Compile Include="QueryHandlers\IQueryHandler.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Contract\FinanceManager.Contract.csproj">
+      <Project>{9e3f10ba-9f84-46f3-bed4-49f3cc9bb8ca}</Project>
+      <Name>FinanceManager.Contract</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Domain\Domain.csproj">
+      <Project>{9a6e81c3-ed8d-4bb2-b6ed-b017c6bc2ee3}</Project>
+      <Name>Domain</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Persistance\Persistance.csproj">
+      <Project>{9d5220c3-2cc1-43e9-836d-1a577b7622f5}</Project>
+      <Name>Persistance</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
