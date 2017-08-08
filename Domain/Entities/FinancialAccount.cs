@@ -11,18 +11,15 @@ namespace Domain.Entities
     public class FinancialAccount : IEntity<Guid>
     {
         internal FinancialAccount() { }
-        public FinancialAccount(Guid id, string firstName, string lastName)
+        public FinancialAccount(Guid id)
         {
             Id = id;
-            FirstName = firstName;
-            LastName = lastName;
-            //Address = address?? new Address();
         }
         public Guid Id { get; private set; }
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
-        //public Address Address { get; private set; }
         public virtual ICollection<FinancialTransaction> Transactions { get; private set; }
+        public byte[] RowVersion { get; private set; }
 
         public Money CalculateBalance()
         {
@@ -35,10 +32,11 @@ namespace Domain.Entities
             return new Money(balance, "CAN");
         }
 
-        public void ChangeName(string firstName, string lastName)
+        public void ChangeName(string firstName, string lastName, byte[] rowVersion)
         {
             FirstName = firstName;
             LastName = lastName;
+            RowVersion = rowVersion;
         }
 
 

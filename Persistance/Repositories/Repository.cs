@@ -60,11 +60,12 @@ namespace Persistance.Repositories
             _context.Set<TEntity>().RemoveRange(entities);
         }
 
-        public virtual void Update(TEntity entity, object objNewValues)
+        public virtual void Update(TEntity entity)
         {
-            _context.Entry(entity).CurrentValues.SetValues(objNewValues);
-            
+            var entry = _context.Entry(entity);
+            entry.State = EntityState.Modified;
         }
+
 
         public virtual void Attach(TEntity entity)
         {

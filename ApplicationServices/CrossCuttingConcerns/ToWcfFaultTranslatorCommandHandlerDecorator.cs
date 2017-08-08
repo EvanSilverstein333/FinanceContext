@@ -5,6 +5,7 @@ using System.ServiceModel;
 using ApplicationServices.CommandHandlers;
 using FinanceManager.Contract.Commands;
 using ValueObjects.Wcf;
+using System.Data;
 
 namespace ApplicationServices.CrossCuttingConcerns
 {
@@ -18,7 +19,7 @@ namespace ApplicationServices.CrossCuttingConcerns
         {
             this.decoratee = decoratee;
         }
-        
+
         public void Execute(TCommand command)
         {
             try
@@ -30,9 +31,14 @@ namespace ApplicationServices.CrossCuttingConcerns
                 // This ensures that validation errors are communicated to the client,
                 // while other exceptions are filtered by WCF (if configured correctly).
                 var errors = new List<MyValidationFailure>();
-                foreach(var error in ex.Errors) { errors.Add(new MyValidationFailure(error.PropertyName, error.ErrorMessage)); }
-                var validator = new MyValidator(errors,ex.Message);
-                throw new FaultException<MyValidator>(validator,validator.ErrorMessage);
+                foreach (var error in ex.Errors) { errors.Add(new MyValidationFailure(error.PropertyName, error.ErrorMessage)); }
+                var validator = new MyValidator(errors, ex.Message);
+                throw new FaultException<MyValidator>(validator, validator.ErrorMessage);
+            }
+            catch (OptimisticConcurrencyException e)
+            {
+                var concurrency = new MyConcurrencyIndicator(e.Message);
+                throw new FaultException<MyConcurrencyIndicator>(concurrency, concurrency.ErrorMessage);
             }
         }
     }

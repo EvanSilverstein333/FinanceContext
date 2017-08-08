@@ -24,6 +24,7 @@ namespace FinanceManager.Contract.Dto
         public string FirstName { get; set; }
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
-        //public Address Address { get; set; }
+        [Browsable(false)]
+        public byte[] RowVersion { get; set; }
     }
 }

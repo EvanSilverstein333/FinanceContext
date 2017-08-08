@@ -26,7 +26,8 @@ namespace ApplicationServices.CommandHandlers
         {
             var transactionDto = command.Transaction;
             var transaction = _unitOfWork.FinancialTransactions.Get(transactionDto.Id);
-            transaction.ChangeInfo(transactionDto.Money, transactionDto.Notes, transactionDto.Date, transactionDto.TransactionType);
+            transaction.ChangeInfo(transactionDto.Money, transactionDto.Notes, transactionDto.Date, transactionDto.TransactionType, transactionDto.RowVersion);
+            _unitOfWork.FinancialTransactions.Update(transaction);
             _eventStore.AddToEventQueue(new FinancialTransactionChangedEvent(transactionDto.Id,transactionDto.AccountId));
             _unitOfWork.Complete();
 

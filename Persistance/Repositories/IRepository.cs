@@ -17,7 +17,7 @@ namespace Persistance.Repositories
         void AddRange(IEnumerable<TEntity> Entities);
         void Remove(TEntity Entity);
         void RemoveRange(IEnumerable<TEntity> Entities);
-        void Update(TEntity Entity, object objNewValues);
+        void Update(TEntity Entity);
         void Attach(TEntity Entity);
         void Detach(TEntity Entity);
 

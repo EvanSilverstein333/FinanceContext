@@ -11,6 +11,7 @@ using System.Data.Entity.Core.Objects;
 using Domain.Entities;
 using Persistance.Repositories;
 using Persistance.Context;
+using System.Data;
 
 namespace Persistance.UnitOfWork
 {
@@ -39,8 +40,15 @@ namespace Persistance.UnitOfWork
 
         public int Complete()
         {
-            
-            return _context.SaveChanges();
+            try
+            {
+                return _context.SaveChanges();
+            }
+            catch (DbUpdateConcurrencyException e)
+            {
+                throw new OptimisticConcurrencyException("Another user has updated that entry", e);
+            }
+
         }
 
         public void Dispose()

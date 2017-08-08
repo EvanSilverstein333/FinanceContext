@@ -25,6 +25,8 @@ namespace FinanceManager.Contract.Dto
         public Money Money { get; set; }
         public TransactionType TransactionType { get; set; }
         public string Notes { get; set; }
+        [Browsable(false)]
+        public byte[] RowVersion { get; set; }
 
     }
 }

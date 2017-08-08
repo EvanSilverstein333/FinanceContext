@@ -25,10 +25,9 @@ namespace ApplicationServices.CommandHandlers
         public void Execute(UpdateFinancialAccountCommand command)
         {
             var accountDto = command.Account;
-            var account = _unitOfWork.FinancialAccounts.Get(accountDto.Id);
-            account.ChangeName(accountDto.FirstName, accountDto.LastName);
-            //account.ChangeContactInformation(accountDto.Address);
-            //var account = new FinancialAccount(accountDto.Id, accountDto.FirstName, accountDto.LastName, accountDto.Address);
+            var account = new FinancialAccount(accountDto.Id);
+            account.ChangeName(accountDto.FirstName, accountDto.LastName, accountDto.RowVersion);
+            _unitOfWork.FinancialAccounts.Update(account);
             _eventStore.AddToEventQueue(new FinancialAccountChangedEvent(accountDto.Id));
             _unitOfWork.Complete();
 

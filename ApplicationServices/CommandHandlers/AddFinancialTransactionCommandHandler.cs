@@ -25,7 +25,8 @@ namespace ApplicationServices.CommandHandlers
         public void Execute(AddFinancialTransactionCommand command)
         {
             var transactionDto = command.Transaction;
-            var transaction = new FinancialTransaction(transactionDto.Id, transactionDto.AccountId, transactionDto.Money, transactionDto.Notes, transactionDto.Date, transactionDto.TransactionType);
+            var transaction = new FinancialTransaction(transactionDto.Id, transactionDto.AccountId);
+            transaction.ChangeInfo(transactionDto.Money, transactionDto.Notes, transactionDto.Date, transactionDto.TransactionType, null);
             _unitOfWork.FinancialTransactions.Add(transaction);
             _eventStore.AddToEventQueue(new FinancialTransactionAddedEvent(transactionDto.Id, transactionDto.AccountId));
             _unitOfWork.Complete();

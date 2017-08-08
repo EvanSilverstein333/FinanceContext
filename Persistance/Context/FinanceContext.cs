@@ -14,8 +14,8 @@ namespace Persistance.Context
 
         public FinanceContext()
         {
-            //Database.SetInitializer<FinanceContext>(new DropCreateDatabaseIfModelChanges<FinanceContext>());
-            Database.SetInitializer<FinanceContext>(new DropCreateDatabaseAlways<FinanceContext>());
+            Database.SetInitializer<FinanceContext>(new DropCreateDatabaseIfModelChanges<FinanceContext>());
+            //Database.SetInitializer<FinanceContext>(new DropCreateDatabaseAlways<FinanceContext>());
 
         }
 
@@ -24,6 +24,9 @@ namespace Persistance.Context
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            modelBuilder.Entity<FinancialAccount>().Property(s => s.RowVersion).IsRowVersion();
+            modelBuilder.Entity<FinancialTransaction>().Property(s => s.RowVersion).IsRowVersion();
+
             modelBuilder.Entity<FinancialAccount>()
                 .Property(acc => acc.Id)
                 .HasDatabaseGeneratedOption(System.ComponentModel.DataAnnotations.Schema.DatabaseGeneratedOption.None);
@@ -41,27 +44,5 @@ namespace Persistance.Context
 
             base.OnModelCreating(modelBuilder);
         }
-        //protected override void OnModelCreating(DbModelBuilder modelBuilder)
-        //{
-
-        //    modelBuilder.Entity<FinancialAccount>()
-        //       .HasOptional(account => account.Transactions)
-        //       .WithMany()
-        //       .WillCascadeOnDelete(true);
-
-        //    //modelBuilder.Entity<PatientVisit>()
-        //    //    .HasRequired(visit => visit.Patient)
-        //    //    .WithMany();
-        //    //modelBuilder.Entity<Patient>()
-        //    //.HasOptional(pt => pt.Visits)
-        //    //.WithMany(visit => visit.)
-        //    //.HasForeignKey(visit => visit.PatientId);
-
-        //    // modelBuilder.Entity<Patient>()
-        //    //.HasMany(pt => pt.visits)
-        //    //.WithRequiredPrincipal();
-
-        //    base.OnModelCreating(modelBuilder);
-        //}
     }
 }
