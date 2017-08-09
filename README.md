@@ -14,7 +14,7 @@ The project supports the following features:
 
 ### Getting Started ###
 
-This project uses 3 WCF services to enable communication with a given application. The FinanceManagerCommandService and FinanceManagerQueryService are located in [Abstractions directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Infrastructure/Abstraction), while an external service is used as a message bus. The 3 services are listed below.  
+This project uses 3 WCF services to enable communication with a given application. The FinanceManagerCommandService and FinanceManagerQueryService are located in [Abstractions directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Infrastructure/Abstractions), while an external service is used as a message bus. The 3 services are listed below.  
 * FinanceManagerCommandService - used for operations that change state (create, update, delete)
 * FinanceManagerQueryService - used for reading operations
 * Publisher - a topic-based publisher that notifies listeners of events that occur
