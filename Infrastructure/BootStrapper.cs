@@ -7,6 +7,8 @@ using SimpleInjector;
 using Infrastructure.IocInstallers;
 using FinanceManager.Contract.Commands;
 using log4net;
+using System.ServiceProcess;
+using Infrastructure.ServerHosts.WindowsService;
 
 namespace Infrastructure
 {
@@ -14,7 +16,8 @@ namespace Infrastructure
     {
         public static readonly Container Container;
         public static readonly ILog Logger;
-        public static Type[] AllContractTypes { get; private set; }
+        public static readonly Type[] AllContractTypes; //{ get; private set; }
+        public static readonly ServiceBase[] WindowsServices;
 
 
         static Bootstrapper()
@@ -28,29 +31,27 @@ namespace Infrastructure
 
             container.Verify();
             Container = container;
-            GetContractTypes();
+
+            AllContractTypes = GetContractTypes();
+            WindowsServices = GetWindowsServices(); // this needs be after container is verified and set
+
 
         }
 
-        private static void GetContractTypes()
+        private static Type[] GetContractTypes()
         {
             var allTypesInContractAssembly = typeof(ICommand).Assembly.GetExportedTypes();
             var contractTypes = allTypesInContractAssembly.Where(t => t.IsClass).ToArray();
-            AllContractTypes = contractTypes;
+            return contractTypes;
         }
 
-
-        //public static void RegisterServices()
-        //{
-
-        //}
-        public static T GetInstance<T>() where T :class
+        private static ServiceBase[] GetWindowsServices()
         {
-            return Container.GetInstance<T>();
-        }
-        public static object GetInstance(Type type)
-        {
-            return Container.GetInstance(type);
+            ServiceBase[] servicesToRun = new ServiceBase[]
+               {
+                    new FinanceManagerWindowsService()
+               };
+            return servicesToRun;
         }
     }
 }

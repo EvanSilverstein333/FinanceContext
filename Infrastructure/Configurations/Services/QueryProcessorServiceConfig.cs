@@ -9,7 +9,7 @@ using System.ServiceModel.Description;
 using Infrastructure.Abstractions;
 //using FinanceManager.Contract.Services;
 
-namespace Infrastructure.Configurations.WcfServices
+namespace Infrastructure.Configurations.Services
 {
     public static class QueryProcessorServiceConfig //: IDisposable
     {

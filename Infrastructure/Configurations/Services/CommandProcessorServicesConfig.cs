@@ -10,7 +10,7 @@ using System.ServiceModel.Description;
 using FinanceManager.Contract.Commands;
 using Infrastructure.Abstractions;
 
-namespace Infrastructure.Configurations.WcfServices
+namespace Infrastructure.Configurations.Services
 {
     public static class CommandProcessorServiceConfig //: IDisposable
     {
