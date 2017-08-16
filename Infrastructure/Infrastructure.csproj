@@ -53,8 +53,17 @@
       <HintPath>..\packages\log4net.2.0.8\lib\net45-full\log4net.dll</HintPath>
       <Private>True</Private>
     </Reference>
-    <Reference Include="PublisherSubscriberService">
-      <HintPath>..\..\..\Services\PublisherSubscriber\PublisherSubscriberService\bin\Debug\PublisherSubscriberService.dll</HintPath>
+    <Reference Include="Microsoft.Diagnostics.Tracing.EventSource, Version=1.1.28.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Diagnostics.Tracing.EventSource.Redist.1.1.28\lib\net46\Microsoft.Diagnostics.Tracing.EventSource.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="RabbitMQ.Client, Version=5.0.0.0, Culture=neutral, PublicKeyToken=89e7d7c5feba84ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\RabbitMQ.Client.5.0.1\lib\net451\RabbitMQ.Client.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="SimpleInjector, Version=4.0.8.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
       <HintPath>..\packages\SimpleInjector.4.0.8\lib\net45\SimpleInjector.dll</HintPath>
@@ -98,9 +107,9 @@
     <Compile Include="Configurations\Mappers\AutoMapperConfiguration.cs" />
     <Compile Include="Configurations\Mappers\FinancialTransactionProfile.cs" />
     <Compile Include="Configurations\Mappers\FinancialAccountProfile.cs" />
-    <Compile Include="Configurations\WcfServices\MsgPublisherServiceConfig.cs" />
-    <Compile Include="Configurations\WcfServices\CommandProcessorServicesConfig.cs" />
-    <Compile Include="Configurations\WcfServices\QueryProcessorServiceConfig.cs" />
+    <Compile Include="Configurations\Services\CommandProcessorServicesConfig.cs" />
+    <Compile Include="Configurations\Services\QueryProcessorServiceConfig.cs" />
+    <Compile Include="Configurations\Services\MsgPublisherRabbitMQConfig.cs" />
     <Compile Include="ErrorHandlers\FatalExceptionHandler.cs" />
     <Compile Include="ErrorHandlers\FatalExceptionObject.cs" />
     <Compile Include="ServerHosts\WindowsService\FinancialManagerWindowsServiceDebugger.cs">

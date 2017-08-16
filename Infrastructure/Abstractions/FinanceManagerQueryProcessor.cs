@@ -36,9 +36,7 @@ namespace Infrastructure.Abstractions
 
             try
             {
-                dynamic queryHandler = Bootstrapper.GetInstance(queryHandlerType);
-
-     
+                dynamic queryHandler = Bootstrapper.Container.GetInstance(queryHandlerType);     
                 return queryHandler.Handle(query);
             }
             catch (Exception ex)

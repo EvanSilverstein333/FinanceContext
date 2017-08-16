@@ -54,10 +54,7 @@ namespace Infrastructure.ServerHosts.WindowsService
                 MethodInfo onStopMethod = typeof(ServiceBase).GetMethod("OnStop", BindingFlags.Instance | BindingFlags.NonPublic);
                 foreach (ServiceBase service in _servicesToRun)
                 {
-                    //listBox1.Items.Add(string.Format("Stopping {0}...", service.ServiceName));
                     onStopMethod.Invoke(service, null);
-                    //listBox1.Items.Add("Stopped");
-                    //Task.Delay(2000);
                 }
 
             }

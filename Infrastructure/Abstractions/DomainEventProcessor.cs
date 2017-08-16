@@ -7,7 +7,6 @@ using ApplicationServices.CrossCuttingConcerns;
 using FinanceManager.Contract.Events;
 using SimpleInjector;
 using ApplicationServices.EventHandlers;
-using PublisherSubscriberService;
 
 namespace Infrastructure.Abstractions
 {

@@ -5,13 +5,12 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using SimpleInjector;
 using Infrastructure.IocInstallers;
-using PublisherSubscriberService;
 using System.ServiceModel;
 using FinanceManager.Contract.Commands;
 using SimpleInjector.Integration.Wcf;
 using Infrastructure.Abstractions;
 using System.ServiceModel.Description;
-using Infrastructure.Configurations.WcfServices;
+using Infrastructure.Configurations.Services;
 using System.ServiceProcess;
 using System.Diagnostics;
 using Infrastructure.ErrorHandlers;
@@ -37,12 +36,7 @@ namespace Infrastructure
                 Application.SetCompatibleTextRenderingDefault(false);
                 Application.ApplicationExit += Application_ApplicationExit;
 
-                var container = Bootstrapper.Container;
-                ServiceBase[] servicesToRun;
-                servicesToRun = new ServiceBase[]
-                {
-                    new FinanceManagerWindowsService()
-                };
+                var servicesToRun = Bootstrapper.WindowsServices;
 
                 if (Environment.UserInteractive) //debug mode: simulate windows service
                 {
