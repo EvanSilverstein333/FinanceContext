@@ -37,11 +37,12 @@ After completing the steps in the Getting Started section you are ready to use t
 The components available to use with this service are provided in the [Commands directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Commands) of the Contract Assembly. For example (assuming a standard MVC client application):
 
 ```
+using FinanceManager.Contract.Dto;
+using FinanceManager.Contract.Commands;
+
 public class FinancialAccountController : Controller
 {
-    using FinanceManager.Contract.Dto;
-    using FinanceManager.Contract.Commands;
-    
+   
     //other stuff
     
     public void UpdateAccount(FinancialAccountDto account)
@@ -57,11 +58,12 @@ public class FinancialAccountController : Controller
 The components available to use with this service are provided in the [Queries directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Queries) of the Contract Assembly. For example (assuming a standard MVC client application):
 
 ```
+using FinanceManager.Contract.Dto;
+using FinanceManager.Contract.Queries;
+
 public class FinancialAccountController : Controller
 {
-    using FinanceManager.Contract.Dto;
-    using FinanceManager.Contract.Queries;
-    
+
     //other stuff
     
     public FinancialAccountDto GetAccount(Guid accountId)
@@ -77,8 +79,8 @@ public class FinancialAccountController : Controller
 #### Message broker ####
 
 The message broker service is configured using direct exchange to notify all listeners of a specific event when that event occurs. The components available to use with this service are provided in the [Events directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Events) of the Contract Assembly. For example:
-```
 
+```
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -92,77 +94,75 @@ using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 using Newtonsoft.Json;
 
-namespace WebClient.Infrastructure.Abstractions
+public class FinanceManagerMessageCallback : IDisposable
 {
-    public class FinanceManagerMessageCallback : IDisposable
+    private static IConnection _connection;
+
+    static FinanceManagerMessageCallback()
     {
-        private static IConnection _connection;
-        
-        static FinanceManagerMessageCallback()
+        var factory = new ConnectionFactory() { HostName = "localhost" };
+        _connection = factory.CreateConnection();
+        SubscribeToMessages();
+    }
+
+    private static void SubscribeToMessages()
+    {
+
+        var channel = _connection.CreateModel();
+        channel.ExchangeDeclare(exchange: "direct_events", type: "direct");
+
+        var queueName = channel.QueueDeclare().QueueName;
+
+        foreach (var e in GetEventTypes())
         {
-            var factory = new ConnectionFactory() { HostName = "localhost" };
-            _connection = factory.CreateConnection();
-            SubscribeToMessages();
+            channel.QueueBind(queue: queueName,
+                                exchange: "direct_events",
+                                routingKey: e.ToString());
         }
 
-        private static void SubscribeToMessages()
+        var consumer = new EventingBasicConsumer(channel);
+        consumer.Received += Message_Received;
+
+        channel.BasicConsume(queue: queueName,
+                                autoAck: true,
+                                consumer: consumer);
+
+    }
+
+    private static void Message_Received(object sender, BasicDeliverEventArgs e)
+    {
+        var body = e.Body;
+        String jsonified = Encoding.UTF8.GetString(e.Body);
+        var jsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
+        var message = JsonConvert.DeserializeObject(jsonified,jsonSerializerSettings);
+
+        if(message.GetType() == typeof(FinancialAccountRemovedEvent))
         {
-
-            var channel = _connection.CreateModel();
-            channel.ExchangeDeclare(exchange: "direct_events", type: "direct");
-
-            var queueName = channel.QueueDeclare().QueueName;
-
-            foreach (var e in GetEventTypes())
-            {
-                channel.QueueBind(queue: queueName,
-                                    exchange: "direct_events",
-                                    routingKey: e.ToString());
-            }
-
-            var consumer = new EventingBasicConsumer(channel);
-            consumer.Received += Message_Received;
-
-            channel.BasicConsume(queue: queueName,
-                                    autoAck: true,
-                                    consumer: consumer);
-            
+            //do something
+        }
+        else
+        {
+            //do something else
         }
 
-        private static void Message_Received(object sender, BasicDeliverEventArgs e)
-        {
-            var body = e.Body;
-            String jsonified = Encoding.UTF8.GetString(e.Body);
-            var jsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
-            var message = JsonConvert.DeserializeObject(jsonified,jsonSerializerSettings);
-            
-            if(eventType == typeof(FinancialAccountRemovedEvent))
-            {
-                //do something
-            }
-            else
-            {
-                //do something else
-            }
+    }
 
-        }
-
-        private static Type[] GetEventTypes()
+    private static Type[] GetEventTypes()
+    {
+        var eventTypes = new Type[]
         {
-            var eventTypes = new Type[]
-            {
-                typeof(FinancialAccountRemovedEvent),
-                typeof(FinancialAccountChangedEvent)
-            };
-            return eventTypes;
-        }
+            typeof(FinancialAccountRemovedEvent),
+            typeof(FinancialAccountChangedEvent)
+        };
+        return eventTypes;
+    }
 
-        public void Dispose()
-        {
-            _connection.Dispose();
-        }
+    public void Dispose()
+    {
+        _connection.Dispose();
     }
 }
+
 
 ```
 
