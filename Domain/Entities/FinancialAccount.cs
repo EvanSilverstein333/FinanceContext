@@ -14,6 +14,7 @@ namespace Domain.Entities
         public FinancialAccount(Guid id)
         {
             Id = id;
+            Transactions = new List<FinancialTransaction>(); // just so not null
         }
         public Guid Id { get; private set; }
         public string FirstName { get; private set; }
