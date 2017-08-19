@@ -14,21 +14,21 @@ The project supports the following features:
 
 ### Getting Started ###
 
-This project uses 3 WCF services to enable communication with a given application. The FinanceManagerCommandService and FinanceManagerQueryService are located in [Abstractions directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Infrastructure/Abstractions), while an external service is used as a message bus. The 3 services are listed below.  
+This project uses 3 services to enable communication with a given client application. Request messages are issued through 2 WCF services, which are the FinanceManagerCommandService and FinanceManagerQueryService (located in [Abstractions directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Infrastructure/Abstractions)). RabbitMQ is used to send notifications to clients through a message broker when domain events occur. The 3 services are listed below. 
 * FinanceManagerCommandService - used for operations that change state (create, update, delete)
 * FinanceManagerQueryService - used for reading operations
-* Publisher - a topic-based publisher that notifies listeners of events that occur
+* Message broker - a RabbitMQ message broker with direct exchange for topic-based notifications
 
 Communcation can be achieved with the following steps:
 
 #### Step 1) - Configure services ####
-Configuration for each of these services is located in [WcfServices directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Infrastructure/Configurations/WcfServices), each of which can be customized to meet your requirements. Proceed to the next step when you are satisfied with your configuration.
+Configuration for each of these services is located in [Services directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Infrastructure/Configurations/Services), each of which can be customized to meet your requirements. Proceed to the next step when you are satisfied with your configuration.
 
 #### Step 2) - Add contract assembly to your application
 The contract assembly contains the components for communicating with the services. The contents of this assembly are located in [Contract directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract).
 
 #### Step 3) - Add services to your application ####
-Add the services to your application based on the binding configurations from Step 1 (for help on adding services: https://msdn.microsoft.com/en-us/library/cc636424(v=ax.50).aspx).  
+The services can be added to your application based on the configuration from Step 1. 
 
 ### Examples ###
 After completing the steps in the Getting Started section you are ready to use this project in your own application. An example of using each service is provided below.
@@ -37,11 +37,12 @@ After completing the steps in the Getting Started section you are ready to use t
 The components available to use with this service are provided in the [Commands directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Commands) of the Contract Assembly. For example (assuming a standard MVC client application):
 
 ```
+using FinanceManager.Contract.Dto;
+using FinanceManager.Contract.Commands;
+
 public class FinancialAccountController : Controller
 {
-    using FinanceManager.Contract.Dto;
-    using FinanceManager.Contract.Commands;
-    
+   
     //other stuff
     
     public void UpdateAccount(FinancialAccountDto account)
@@ -57,11 +58,12 @@ public class FinancialAccountController : Controller
 The components available to use with this service are provided in the [Queries directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Queries) of the Contract Assembly. For example (assuming a standard MVC client application):
 
 ```
+using FinanceManager.Contract.Dto;
+using FinanceManager.Contract.Queries;
+
 public class FinancialAccountController : Controller
 {
-    using FinanceManager.Contract.Dto;
-    using FinanceManager.Contract.Queries;
-    
+
     //other stuff
     
     public FinancialAccountDto GetAccount(Guid accountId)
@@ -74,31 +76,67 @@ public class FinancialAccountController : Controller
 }
 ```
 
-#### Publisher ####
+#### Message broker ####
 
-The Publisher service is configured as a duplex channel with 1-way communication to notify all listeners of a specific event when that event occurs. Each listener may subscribe to 1 or more events. A listener is established by implementing the "IPublisherCallback" contract, which can be found in the namespace created upon adding the Publisher service. The IPublisherCallback contract is defined by the "void MessageHandler(MessageWrapper messageWrapper)" method, which is called each time the publisher notifies a given listener of an event. Each listener must subscribe to events to recieve notifications, which is achieved by calling the "Subscribe(string messageType)" method of the Publisher service. For example:
+The message broker service is configured using direct exchange to notify all listeners of a specific event when that event occurs. The components available to use with this service are provided in the [Events directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Events) of the Contract Assembly. For example:
 
-The components available to use with this service are provided in the [Events directory](https://github.com/EvanSilverstein333/FinanceContext/tree/master/Contract/Events) of the Contract Assembly. For example:
 ```
-public class FinanceManagerMessageCallback : IPublisherCallback
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using SimpleInjector;
+using System.ServiceModel;
+using FinanceManager.Contract.Events;
+using System.Diagnostics;
+using RabbitMQ.Client;
+using RabbitMQ.Client.Events;
+using Newtonsoft.Json;
+
+public class FinanceManagerMessageCallback : IDisposable
 {
-    using System.ServiceModel;  //required for InstanceContext (duplex channel) 
-    using FinanceManger.Contract.Events; 
-    
-    
-    public static void SubscribeToMessages() //call this at the beginning of your app
+    private static IConnection _connection;
+
+    static FinanceManagerMessageCallback()
     {
-        var context = new InstanceContext(this) //for duplex channel
-        var publisher = new PublisherClient(context);
-        publisher.Subscribe(typeof(FinancialAccountRemovedEvent).ToString());
-        publisher.Subscribe(typeof(FinancialAccountChangedEvent).ToString());
+        var factory = new ConnectionFactory() { HostName = "localhost" };
+        _connection = factory.CreateConnection();
+        SubscribeToMessages();
     }
 
-    public void MessageHandler(MessageWrapper messageWrapper)
+    private static void SubscribeToMessages()
     {
 
-        var eventType = messageWrapper.Message.GetType();
-        if(eventType == typeof(FinancialAccountRemovedEvent))
+        var channel = _connection.CreateModel();
+        channel.ExchangeDeclare(exchange: "direct_events", type: "direct");
+
+        var queueName = channel.QueueDeclare().QueueName;
+
+        foreach (var e in GetEventTypes())
+        {
+            channel.QueueBind(queue: queueName,
+                                exchange: "direct_events",
+                                routingKey: e.ToString());
+        }
+
+        var consumer = new EventingBasicConsumer(channel);
+        consumer.Received += Message_Received;
+
+        channel.BasicConsume(queue: queueName,
+                                autoAck: true,
+                                consumer: consumer);
+
+    }
+
+    private static void Message_Received(object sender, BasicDeliverEventArgs e)
+    {
+        var body = e.Body;
+        String jsonified = Encoding.UTF8.GetString(e.Body);
+        var jsonSerializerSettings = new JsonSerializerSettings() { TypeNameHandling = TypeNameHandling.All };
+        var message = JsonConvert.DeserializeObject(jsonified,jsonSerializerSettings);
+
+        if(message.GetType() == typeof(FinancialAccountRemovedEvent))
         {
             //do something
         }
@@ -106,8 +144,26 @@ public class FinanceManagerMessageCallback : IPublisherCallback
         {
             //do something else
         }
+
+    }
+
+    private static Type[] GetEventTypes()
+    {
+        var eventTypes = new Type[]
+        {
+            typeof(FinancialAccountRemovedEvent),
+            typeof(FinancialAccountChangedEvent)
+        };
+        return eventTypes;
+    }
+
+    public void Dispose()
+    {
+        _connection.Dispose();
     }
 }
+
+
 ```
 
 ### Installation ###
