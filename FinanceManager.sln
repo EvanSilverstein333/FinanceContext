@@ -17,6 +17,8 @@ Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "FinanceManagerSetup", "Fina
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "DomainTest\Domain.Test.csproj", "{734D3E38-6929-40EE-B9EC-ECB6FE2D49AE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance.Test", "Persistance.Test\Persistance.Test.csproj", "{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -77,6 +79,14 @@ Global
 		{734D3E38-6929-40EE-B9EC-ECB6FE2D49AE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{734D3E38-6929-40EE-B9EC-ECB6FE2D49AE}.Release|x86.ActiveCfg = Release|Any CPU
 		{734D3E38-6929-40EE-B9EC-ECB6FE2D49AE}.Release|x86.Build.0 = Release|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Debug|x86.Build.0 = Debug|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|x86.ActiveCfg = Release|Any CPU
+		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
