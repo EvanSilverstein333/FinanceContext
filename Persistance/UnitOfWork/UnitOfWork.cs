@@ -15,7 +15,7 @@ using System.Data;
 
 namespace Persistance.UnitOfWork
 {
-    public class UnitOfWork : IUnitOfWork
+    public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly FinanceContext _context;
         private FinancialAccountRepository _financialAccounts;
@@ -25,17 +25,18 @@ namespace Persistance.UnitOfWork
         public FinancialTransactionRepository FinancialTransactions { get { return _financialTransactions; } }
 
         
-        public UnitOfWork(FinanceContext context)
+        public UnitOfWork(FinanceContext context, FinancialAccountRepository accountRepo, FinancialTransactionRepository transactionRepo)
         {
             _context = context;
-            RepositoryFactory(context);
+            _financialAccounts = accountRepo;
+            _financialTransactions = transactionRepo;
+            SetContext(context);
         }
 
-        private void RepositoryFactory(DbContext context)
+        private void SetContext(DbContext context)
         {
-            _financialAccounts = new FinancialAccountRepository(context);
-            _financialTransactions = new FinancialTransactionRepository(context);
-
+            _financialAccounts.SetContext(context);
+            _financialTransactions.SetContext(context);
         }
 
         public int Complete()

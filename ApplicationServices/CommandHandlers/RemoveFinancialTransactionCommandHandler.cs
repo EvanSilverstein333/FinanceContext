@@ -24,16 +24,6 @@ namespace ApplicationServices.CommandHandlers
             var Transaction = _unitOfWork.FinancialTransactions.Get(command.TransactionId);
             _unitOfWork.FinancialTransactions.Remove(Transaction);
             _eventStore.AddToEventQueue(new FinancialTransactionRemovedEvent(command.TransactionId, command.AccountId));
-            _unitOfWork.Complete();
-
-
-            //_postCommit.Committed += () =>
-            //{
-            //    // Set the output property.
-            //    _eventPublisher.AddToEventQueue(new NewPatientRegisteredEvent(patient.Id));
-            //    command.CommandCompleted(true);
-            //};
-
         }
     }
 }

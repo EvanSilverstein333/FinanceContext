@@ -10,15 +10,15 @@ using Domain.Entities;
 
 namespace Persistance.Repositories
 {
-    public class Repository<TEntity,T> : IRepository<TEntity,T> where TEntity : class, IEntity<T>
+    public abstract class Repository<TEntity,T> : IRepository where TEntity : class, IEntity<T>
     {
 
-        protected readonly DbContext _context;
+        protected DbContext _context;
 
-        public Repository(DbContext Context)
-        {
-            _context = Context;
-        }
+        //public Repository(DbContext Context)
+        //{
+        //    _context = Context;
+        //}
 
         public virtual TEntity Get(T Id)
         {
@@ -75,6 +75,11 @@ namespace Persistance.Repositories
         public virtual void Detach(TEntity Entity)
         {
             _context.Entry<TEntity>(Entity).State = EntityState.Detached;
+        }
+
+        public void SetContext(DbContext context)
+        {
+            _context = context;
         }
     }
 }

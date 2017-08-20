@@ -9,6 +9,7 @@ using Persistance.UnitOfWork;
 using SimpleInjector;
 using System.Data.Entity;
 using SimpleInjector.Diagnostics;
+using SimpleInjector.Lifestyles;
 
 namespace Infrastructure.IocInstallers
 {
@@ -19,24 +20,26 @@ namespace Infrastructure.IocInstallers
         public static void RegisterServices(Container _simpleContainer)
         {
             _container = _simpleContainer;
-            _simpleContainer.Register(typeof(IRepository<,>), AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Transient);
-            _simpleContainer.Register<IUnitOfWork, UnitOfWork>(Lifestyle.Transient);
-            _simpleContainer.Register<DbContext,FinanceContext>(Lifestyle.Transient);
-            _simpleContainer.Register<FinanceContext>(Lifestyle.Transient);
+            _simpleContainer.Register<UnitOfWork>(Lifestyle.Scoped);
+            _simpleContainer.Register<IUnitOfWork>(() => _simpleContainer.GetInstance<UnitOfWork>());
+            _simpleContainer.Register<FinanceContext>(Lifestyle.Scoped);
+            RegisterRepositories();
         }
-
-        public static void SuppressWarnings()
+        
+        private static void RegisterRepositories()
         {
-            Registration reg = null;
+            var repoAssembly = typeof(IRepository).Assembly;
+            var repoTypes = repoAssembly.GetExportedTypes()
+                .Where(t => t.IsAbstract == false && t.GetInterfaces().Contains(typeof(IRepository)));
 
-            reg = _container.GetRegistration(typeof(IUnitOfWork)).Registration;
-            reg.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, // this should be scoped
-                "The uow is expected to dispose after commandhandler has run");
+            foreach (var type in repoTypes)
+            {
+                _container.Register(type, type, Lifestyle.Scoped); // implementation is directly injected in uow
+            }
 
-            reg = _container.GetRegistration(typeof(FinanceContext)).Registration;
-            reg.SuppressDiagnosticWarning(DiagnosticType.DisposableTransientComponent, // this should be scoped
-                "The context is expected to dispose after commandhandler has run");
         }
+
+
 
 
     }
