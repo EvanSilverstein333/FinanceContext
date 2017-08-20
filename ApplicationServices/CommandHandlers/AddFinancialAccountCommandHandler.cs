@@ -29,8 +29,6 @@ namespace ApplicationServices.CommandHandlers
             account.ChangeName(accountDto.FirstName, accountDto.LastName, null);
             _unitOfWork.FinancialAccounts.Add(account);
             _eventStore.AddToEventQueue(new FinancialAccountAddedEvent(accountDto.Id));
-            _unitOfWork.Complete();
-
         }
     }
 }

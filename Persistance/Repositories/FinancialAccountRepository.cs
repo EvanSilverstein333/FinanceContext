@@ -10,9 +10,9 @@ namespace Persistance.Repositories
 {
     public class FinancialAccountRepository:Repository<FinancialAccount,Guid>
     {
-        public FinancialAccountRepository(DbContext context) : base(context)
-        {
-        }
+        //public FinancialAccountRepository(DbContext context) : base(context)
+        //{
+        //}
 
         public FinancialAccount GetWithTransactions(Guid accountId)
         {

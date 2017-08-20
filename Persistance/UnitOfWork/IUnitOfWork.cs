@@ -9,10 +9,9 @@ using Persistance.Repositories;
 
 namespace Persistance.UnitOfWork
 {
-    public interface IUnitOfWork : IDisposable
+    public interface IUnitOfWork
     {
         FinancialAccountRepository FinancialAccounts { get; }
         FinancialTransactionRepository FinancialTransactions { get; }
-        int Complete();
     }
 }

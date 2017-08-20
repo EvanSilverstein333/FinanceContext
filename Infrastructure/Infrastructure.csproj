@@ -102,6 +102,7 @@
     <Compile Include="Abstractions\ExternalMessagePublisher.cs" />
     <Compile Include="Abstractions\FinanceManagerQueryProcessor.cs" />
     <Compile Include="Abstractions\Logger.cs" />
+    <Compile Include="Abstractions\TransactionScrope.cs" />
     <Compile Include="Abstractions\WcfExceptionTranslatorDebugger.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Configurations\Mappers\AutoMapperConfiguration.cs" />

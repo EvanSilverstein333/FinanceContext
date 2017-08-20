@@ -29,16 +29,6 @@ namespace ApplicationServices.CommandHandlers
             account.ChangeName(accountDto.FirstName, accountDto.LastName, accountDto.RowVersion);
             _unitOfWork.FinancialAccounts.Update(account);
             _eventStore.AddToEventQueue(new FinancialAccountChangedEvent(accountDto.Id));
-            _unitOfWork.Complete();
-
-
-            //_postCommit.Committed += () =>
-            //{
-            //    // Set the output property.
-            //    _eventPublisher.AddToEventQueue(new NewPatientRegisteredEvent(patient.Id));
-            //    command.CommandCompleted(true);
-            //};
-
         }
     }
 }

@@ -9,6 +9,7 @@ using FinanceManager.Contract.Commands;
 using log4net;
 using System.ServiceProcess;
 using Infrastructure.ServerHosts.WindowsService;
+using SimpleInjector.Lifestyles;
 
 namespace Infrastructure
 {
@@ -24,10 +25,12 @@ namespace Infrastructure
         {
             Logger = log4net.LogManager.GetLogger("RollingFileLogger");
             var container = new Container();
+            container.Options.DefaultScopedLifestyle = new ThreadScopedLifestyle();
             InfrastructureInstaller.RegisterServices(container);
             ApplicationServicesInstaller.RegisterServices(container);
             PersistanceInstaller.RegisterServices(container);
-            PersistanceInstaller.SuppressWarnings();
+            InfrastructureInstaller.SuppressWarnings();
+            //PersistanceInstaller.SuppressWarnings();
 
             container.Verify();
             Container = container;

@@ -24,8 +24,6 @@ namespace ApplicationServices.CommandHandlers
             var account = _unitOfWork.FinancialAccounts.Get(command.AccountId);
             _unitOfWork.FinancialAccounts.Remove(account);
             _eventStore.AddToEventQueue(new FinancialAccountRemovedEvent(command.AccountId));
-            _unitOfWork.Complete();
-
         }
     }
 }

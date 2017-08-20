@@ -22,6 +22,8 @@ namespace Infrastructure.IocInstallers
 
 
             // CommandDecorators
+            _simpleContainer.RegisterDecorator(typeof(ICommandHandler<>), typeof(CommitTransactionCommandHandlerDecorator<>));
+            _simpleContainer.RegisterDecorator(typeof(ICommandHandler<>), typeof(TransactionScopeCommandHandlerDecorator<>));
             _simpleContainer.RegisterDecorator(typeof(ICommandHandler<>), typeof(PerformanceMetricsCommandHandlerDecorator<>));
             //_simpleContainer.RegisterDecorator(typeof(ICommandHandler<>), typeof(ValidationCommandHandlerDecorator<>));
             _simpleContainer.RegisterDecorator(typeof(ICommandHandler<>), typeof(NotifyOnRequestCompletedCommandHandlerDecorator<>));
@@ -30,6 +32,7 @@ namespace Infrastructure.IocInstallers
 
 
             //Query Decorators
+            _simpleContainer.RegisterDecorator(typeof(IQueryHandler<,>), typeof(TransactionScopeQueryHandlerDecorator<,>));
             _simpleContainer.RegisterDecorator(typeof(IQueryHandler<,>), typeof(CachingQueryHandlerDecorator<,>));
 
 

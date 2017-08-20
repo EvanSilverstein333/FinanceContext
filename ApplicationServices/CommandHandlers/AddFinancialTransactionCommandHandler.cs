@@ -29,16 +29,6 @@ namespace ApplicationServices.CommandHandlers
             transaction.ChangeInfo(transactionDto.Money, transactionDto.Notes, transactionDto.Date, transactionDto.TransactionType, null);
             _unitOfWork.FinancialTransactions.Add(transaction);
             _eventStore.AddToEventQueue(new FinancialTransactionAddedEvent(transactionDto.Id, transactionDto.AccountId));
-            _unitOfWork.Complete();
-
-
-            //_postCommit.Committed += () =>
-            //{
-            //    // Set the output property.
-            //    _eventPublisher.AddToEventQueue(new NewPatientRegisteredEvent(patient.Id));
-            //    command.CommandCompleted(true);
-            //};
-
         }
     }
 }
