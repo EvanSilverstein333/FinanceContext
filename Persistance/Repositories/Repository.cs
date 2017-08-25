@@ -52,12 +52,16 @@ namespace Persistance.Repositories
 
         public virtual void Remove(TEntity entity)
         {
-            _context.Set<TEntity>().Remove(entity);
+            var entry = _context.Entry(entity);
+            entry.State = EntityState.Deleted;
         }
 
         public virtual void RemoveRange(IEnumerable<TEntity> entities)
         {
-            _context.Set<TEntity>().RemoveRange(entities);
+            foreach(var entity in entities)
+            {
+                Remove(entity);
+            }
         }
 
         public virtual void Update(TEntity entity)

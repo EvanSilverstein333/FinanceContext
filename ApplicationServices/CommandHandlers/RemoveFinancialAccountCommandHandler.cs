@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Persistance.UnitOfWork;
 using FinanceManager.Contract.Commands;
 using FinanceManager.Contract.Events;
+using Domain.Entities;
 
 namespace ApplicationServices.CommandHandlers
 {
@@ -21,9 +22,9 @@ namespace ApplicationServices.CommandHandlers
         }
         public void Execute(RemoveFinancialAccountCommand command)
         {
-            var account = _unitOfWork.FinancialAccounts.Get(command.AccountId);
+            var account = new FinancialAccount(command.Account.Id) { RowVersion = command.Account.RowVersion };
             _unitOfWork.FinancialAccounts.Remove(account);
-            _eventStore.AddToEventQueue(new FinancialAccountRemovedEvent(command.AccountId));
+            _eventStore.AddToEventQueue(new FinancialAccountRemovedEvent(command.Account.Id));
         }
     }
 }

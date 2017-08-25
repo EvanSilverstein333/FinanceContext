@@ -20,7 +20,7 @@ namespace Domain.Entities
         public string FirstName { get; private set; }
         public string LastName { get; private set; }
         public virtual ICollection<FinancialTransaction> Transactions { get; private set; }
-        public byte[] RowVersion { get; private set; }
+        public byte[] RowVersion { get; set; }
 
         public Money CalculateBalance()
         {

@@ -15,6 +15,7 @@ namespace Domain.Entities
         {
             Id = id;
             AccountId = accountId;
+            Money = new Money(); //default shouldn't be null
         }
         public Guid Id { get; private set; }
         public Money Money { get; private set; }
@@ -22,7 +23,7 @@ namespace Domain.Entities
         public DateTime? Date { get; private set; }
         public Guid AccountId { get; private set; }
         public TransactionType TransactionType { get; private set; }
-        public byte[] RowVersion { get; private set; }
+        public byte[] RowVersion { get; set; }
 
         public void ChangeInfo(Money money, string notes, DateTime? date, TransactionType transactionType, byte[] rowVersion)
         {

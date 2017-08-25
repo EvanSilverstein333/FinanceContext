@@ -10,12 +10,10 @@ namespace FinanceManager.Contract.Commands
     public class RemoveFinancialTransactionCommand : ICommand
     {
         public RemoveFinancialTransactionCommand() { }
-        public RemoveFinancialTransactionCommand(Guid transactionId, Guid accountId)
+        public RemoveFinancialTransactionCommand(FinancialTransactionDto transaction)
         {
-            TransactionId = transactionId;
-            AccountId = accountId;
+            Transaction = transaction;
         }
-        public Guid TransactionId { get; set; }
-        public Guid AccountId { get; set; }
+        public FinancialTransactionDto Transaction { get; set; }
     }
 }
