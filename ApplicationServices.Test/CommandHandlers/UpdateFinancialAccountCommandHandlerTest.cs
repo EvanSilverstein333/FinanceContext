@@ -17,11 +17,11 @@ using FinanceManager.Contract.Events;
 namespace ApplicationServices.Test.CommandHandlers
 {
     [TestClass]
-    public class RemoveFinancialAccountCommandHandlerTest
+    public class UpdateFinancialAccountCommandHandlerTest
     {
-        private RemoveFinancialAccountCommandHandler _handler;
+        private UpdateFinancialAccountCommandHandler _handler;
         private FinancialAccountDto _accountDto;
-        private RemoveFinancialAccountCommand _cmd;
+        private UpdateFinancialAccountCommand _cmd;
         private IUnitOfWork _mockIUOW;
         private IDomainEventStore _mockIEventStore;
         private FinancialAccountRepository _mockRepo;
@@ -29,30 +29,28 @@ namespace ApplicationServices.Test.CommandHandlers
         [TestInitialize]
         public void TestInitialize()
         {
-            _accountDto = new FinancialAccountDto(Guid.NewGuid())
-            {
-                FirstName = "John",
-                LastName = "Smith",
-                RowVersion = new byte[0]
-                
-            };
-
             _mockRepo = Substitute.For<FinancialAccountRepository>();
             _mockIUOW = Substitute.For<IUnitOfWork>();
             _mockIUOW.FinancialAccounts.Returns(_mockRepo);
             _mockIEventStore = Substitute.For<IDomainEventStore>();
-            _handler = new RemoveFinancialAccountCommandHandler(_mockIUOW, _mockIEventStore);
-            _cmd = new RemoveFinancialAccountCommand(_accountDto);
+            _handler = new UpdateFinancialAccountCommandHandler(_mockIUOW, _mockIEventStore);
+            _accountDto = new FinancialAccountDto(Guid.NewGuid())
+            {
+                FirstName = "John",
+                LastName = "Smith"
+            };
+            _cmd = new UpdateFinancialAccountCommand(_accountDto);
         }
 
         [TestMethod]
         public void ExecuteCommand_WithValidInputs()
         {
             _handler.Execute(_cmd);
-            _mockIEventStore.Received().AddToEventQueue(Arg.Is<FinancialAccountRemovedEvent>(x => x.AccountId == _accountDto.Id));
-            _mockRepo.Received().Remove(Arg.Is<FinancialAccount>(
-                x => x.Id == _accountDto.Id &&
-                x.RowVersion == _accountDto.RowVersion
+            _mockIEventStore.Received().AddToEventQueue(Arg.Is<FinancialAccountChangedEvent>(x => x.AccountId == _accountDto.Id));
+            _mockRepo.Received().Update(Arg.Is<FinancialAccount>(
+                x => x.FirstName == _accountDto.FirstName &&
+                x.LastName == _accountDto.LastName &&
+                x.Id == _accountDto.Id
                 ));
         }
 

@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "DomainTest\D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Persistance.Test", "Persistance.Test\Persistance.Test.csproj", "{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApplicationServices.Test", "ApplicationServices.Test\ApplicationServices.Test.csproj", "{E47E3DB5-3C34-4F69-8884-F2961552BB46}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -87,6 +89,14 @@ Global
 		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|x86.ActiveCfg = Release|Any CPU
 		{2703F384-F0FF-4A8A-BD54-DBFF4C6366FE}.Release|x86.Build.0 = Release|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Debug|x86.Build.0 = Debug|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Release|x86.ActiveCfg = Release|Any CPU
+		{E47E3DB5-3C34-4F69-8884-F2961552BB46}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
