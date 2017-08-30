@@ -35,11 +35,32 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="AutoMapper, Version=6.1.1.0, Culture=neutral, PublicKeyToken=be96cd2c38ef1005, processorArchitecture=MSIL">
+      <HintPath>..\packages\AutoMapper.6.1.1\lib\net45\AutoMapper.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.1.3\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="FluentValidation, Version=7.0.0.0, Culture=neutral, PublicKeyToken=7de548da2fbae0f0, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentValidation.7.1.1\lib\net45\FluentValidation.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="NSubstitute, Version=2.0.3.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.2.0.3\lib\net45\NSubstitute.dll</HintPath>
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Data.Entity" />
+    <Reference Include="System.Runtime.Caching" />
+    <Reference Include="System.ServiceModel" />
     <Reference Include="ValueObjects, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Common\CommonItems\ValueObjects\bin\Debug\ValueObjects.dll</HintPath>
@@ -64,10 +85,20 @@
     <Compile Include="CommandHandlers\RemoveFinancialAccountCommandHandlerTest.cs" />
     <Compile Include="CommandHandlers\AddFinancialTransactionCommandHandlerTest.cs" />
     <Compile Include="CommandHandlers\AddFinancialAccountCommandHandlerTest.cs" />
+    <Compile Include="CrossCuttingConcerns\CommitTransactionCommandHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\CachingQueryHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\DomainEventStoreImplTest.cs" />
+    <Compile Include="CrossCuttingConcerns\LoggingCommandHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\NotifyOnRequestCompletedCommandHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\TransactionScopeQueryHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\TransactionScopeCommandHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\ToWcfFaultTranslatorCommandHandlerDecoratorTest.cs" />
+    <Compile Include="CrossCuttingConcerns\PerformanceMetricsCommandHandlerDecoratorTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
@@ -89,7 +120,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="CrossCuttingConcerns\" />
     <Folder Include="EventHandlers\" />
     <Folder Include="QueryHandlers\" />
   </ItemGroup>
