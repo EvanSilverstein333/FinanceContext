@@ -99,6 +99,13 @@
     <Compile Include="EventHandlers\InvalidateGetFinancialAccountByIdCacheTest.cs" />
     <Compile Include="EventHandlers\InvalidateGetFinancialAccountBalanceCacheTest.cs" />
     <Compile Include="EventHandlers\InvalidateGetAllFinancialAccountsCacheTest.cs" />
+    <Compile Include="QueryHandlers\GetFinancialTransactionsByAccountIdQueryHandlerTest.cs" />
+    <Compile Include="QueryHandlers\GetFinancialTransactionByIdQueryHandlerTest.cs" />
+    <Compile Include="QueryHandlers\GetFinancialAccountByIdQueryHandlerTest.cs" />
+    <Compile Include="QueryHandlers\GetFinancialAccountBalanceQueryHandlerTest.cs" />
+    <Compile Include="QueryHandlers\GetAllFinancialAccountsQueryHandlerTest.cs" />
+    <Compile Include="QueryHandlers\FindFinancialTransactionsByDateQueryHandlerTest.cs" />
+    <Compile Include="QueryHandlers\FindFinancialAccountsBySearchTextQueryHandlerTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -124,9 +131,7 @@
       <Name>Persistance</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="QueryHandlers\" />
-  </ItemGroup>
+  <ItemGroup />
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
       <ItemGroup>
