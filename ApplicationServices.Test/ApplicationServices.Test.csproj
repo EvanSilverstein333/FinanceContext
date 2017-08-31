@@ -94,6 +94,11 @@
     <Compile Include="CrossCuttingConcerns\TransactionScopeCommandHandlerDecoratorTest.cs" />
     <Compile Include="CrossCuttingConcerns\ToWcfFaultTranslatorCommandHandlerDecoratorTest.cs" />
     <Compile Include="CrossCuttingConcerns\PerformanceMetricsCommandHandlerDecoratorTest.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialTransactionsByAccountIdCacheTest.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialTransactionByIdCacheTest.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialAccountByIdCacheTest.cs" />
+    <Compile Include="EventHandlers\InvalidateGetFinancialAccountBalanceCacheTest.cs" />
+    <Compile Include="EventHandlers\InvalidateGetAllFinancialAccountsCacheTest.cs" />
     <Compile Include="UnitTest1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -120,7 +125,6 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EventHandlers\" />
     <Folder Include="QueryHandlers\" />
   </ItemGroup>
   <Choose>
