@@ -17,10 +17,10 @@ namespace ApplicationServices.QueryHandlers
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
 
-        public GetFinancialAccountBalanceQueryHandler(IUnitOfWork unitOfWork, MapperConfiguration config)
+        public GetFinancialAccountBalanceQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = config.CreateMapper();
+            _mapper = mapper;
         }
 
         public Money Handle(GetFinancialAccountBalanceQuery query)

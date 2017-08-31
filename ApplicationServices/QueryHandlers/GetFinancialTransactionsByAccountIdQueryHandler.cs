@@ -17,10 +17,10 @@ namespace ApplicationServices.QueryHandlers
         private IUnitOfWork _unitOfWork;
         private IMapper _mapper;
 
-        public GetFinancialTransactionsByAccountIdQueryHandler(IUnitOfWork unitOfWork, MapperConfiguration config)
+        public GetFinancialTransactionsByAccountIdQueryHandler(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
-            _mapper = config.CreateMapper();
+            _mapper = mapper;
         }
 
         public FinancialTransactionDto[] Handle(GetFinancialTransactionsByAccountIdQuery query)

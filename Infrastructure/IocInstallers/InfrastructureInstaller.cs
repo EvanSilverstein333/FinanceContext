@@ -28,6 +28,7 @@ namespace Infrastructure.IocInstallers
         {
             _container = _simpleContainer;
             _simpleContainer.RegisterSingleton<MapperConfiguration>(AutoMapperConfiguration.MapConfig);
+            _simpleContainer.Register<IMapper>(() => _simpleContainer.GetInstance<MapperConfiguration>().CreateMapper());
             _simpleContainer.RegisterSingleton<ObjectCache>(new MemoryCache("MyCache"));
             _simpleContainer.RegisterSingleton<ILog>(Bootstrapper.Logger);
             _simpleContainer.Register<ILogger, Logger>();
