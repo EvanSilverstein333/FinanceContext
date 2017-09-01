@@ -27,19 +27,15 @@ namespace ApplicationServices.Test.QueryHandlers
         private IMapper _mockMapper;
         private GetFinancialAccountBalanceQuery _query;
         private FinancialAccount _mockAccount;
-        private Money _fakeData;
 
         [TestInitialize]
         public void TestInitialize()
         {
-            _fakeData = new Money();
             _mockAccount = Substitute.For<FinancialAccount>(Guid.NewGuid());
-            //mockAccount.CalculateBalance().Returns(_fakeData);
-            var mockAccountRepo = Substitute.For<FinancialAccountRepository>();
-            //mockAccountRepo.SetContext(new FinanceContext());
-            //mockAccountRepo.GetWithTransactions(Arg.Any<Guid>()).Returns(_mockAccount);
+            var mockIAccountRepo = Substitute.For<IFinancialAccountRepository>();
+            mockIAccountRepo.GetWithTransactions(Arg.Any<Guid>()).Returns(_mockAccount);
             _mockIUnitOfWork = Substitute.For<IUnitOfWork>();
-            _mockIUnitOfWork.FinancialAccounts.Returns(mockAccountRepo);
+            _mockIUnitOfWork.FinancialAccounts.Returns(mockIAccountRepo);
             _mockMapper = Substitute.For<IMapper>();
 
             _query = new GetFinancialAccountBalanceQuery();

@@ -29,9 +29,10 @@ namespace ApplicationServices.Test.QueryHandlers
         [TestInitialize]
         public void TestInitialize()
         {
-            var mockTransactionRepo = Substitute.For<FinancialTransactionRepository>();
+            var mockITransactionRepo = Substitute.For<IFinancialTransactionRepository>();
             _mockIUnitOfWork = Substitute.For<IUnitOfWork>();
-            _mockIUnitOfWork.FinancialTransactions.Returns(mockTransactionRepo);
+            _mockIUnitOfWork.FinancialTransactions.Returns(mockITransactionRepo);
+
             _fakeDataDto = new FinancialTransactionDto[2] {
                 new FinancialTransactionDto(),
                 new FinancialTransactionDto()

@@ -59,14 +59,18 @@ namespace Persistance.Test.Repositories
         public void Remove_WithValidInputs()
         {
             _repo.Remove(_account);
-            _mockDbSet.Received().Remove(_account);
+            _mockContext.Received().Entry(_account);
         }
 
         [TestMethod]
         public void RemoveRange_WithValidInputs()
         {
             _repo.RemoveRange(_accountCollection);
-            _mockDbSet.Received().RemoveRange(_accountCollection);
+            //_repo.Received(_accountCollection.Count()).Remove(Arg.Any<FinancialAccount>());
+            foreach(var account in _accountCollection)
+            {
+                _mockContext.Received().Entry(account);
+            }
 
         }
 
