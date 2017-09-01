@@ -23,18 +23,23 @@ namespace Infrastructure.IocInstallers
             _simpleContainer.Register<UnitOfWork>(Lifestyle.Scoped);
             _simpleContainer.Register<IUnitOfWork>(() => _simpleContainer.GetInstance<UnitOfWork>());
             _simpleContainer.Register<FinanceContext>(Lifestyle.Scoped);
+            //_simpleContainer.Register(typeof(IRepository<,>), AppDomain.CurrentDomain.GetAssemblies(), Lifestyle.Scoped);
+
             RegisterRepositories();
         }
-        
+
+
         private static void RegisterRepositories()
         {
-            var repoAssembly = typeof(IRepository).Assembly;
-            var repoTypes = repoAssembly.GetExportedTypes()
-                .Where(t => t.IsAbstract == false && t.GetInterfaces().Contains(typeof(IRepository)));
+            var repoAssembly = typeof(IRepository<,>).Assembly;
+            var repoRegistrations = repoAssembly.GetExportedTypes()
+                .Where(t => t.IsAbstract == false && t.GetInterfaces()
+                .Any(i => i.IsGenericType && i.GetGenericTypeDefinition() == typeof(IRepository<,>)))
+                .Select( t => new {Type = t, Service = t.GetInterfaces().Where(i => i.IsGenericType == false).First()});
 
-            foreach (var type in repoTypes)
+            foreach (var reg in repoRegistrations)
             {
-                _container.Register(type, type, Lifestyle.Scoped); // implementation is directly injected in uow
+                _container.Register(reg.Service, reg.Type, Lifestyle.Scoped); // implementation is directly injected in uow
             }
 
         }

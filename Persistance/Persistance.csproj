@@ -53,6 +53,8 @@
     <Compile Include="Context\FinanceContext.cs" />
     <Compile Include="Repositories\FinancialAccountRepository.cs" />
     <Compile Include="Repositories\FinancialTransactionRepository.cs" />
+    <Compile Include="Repositories\IFinancialTransactionRepository.cs" />
+    <Compile Include="Repositories\IFinancialAccountRepository.cs" />
     <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\Repository.cs" />

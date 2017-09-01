@@ -11,7 +11,7 @@ namespace Persistance.UnitOfWork
 {
     public interface IUnitOfWork
     {
-        FinancialAccountRepository FinancialAccounts { get; }
-        FinancialTransactionRepository FinancialTransactions { get; }
+        IFinancialAccountRepository FinancialAccounts { get; }
+        IFinancialTransactionRepository FinancialTransactions { get; }
     }
 }

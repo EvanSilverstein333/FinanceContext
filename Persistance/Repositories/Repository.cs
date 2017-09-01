@@ -10,15 +10,10 @@ using Domain.Entities;
 
 namespace Persistance.Repositories
 {
-    public abstract class Repository<TEntity,T> : IRepository where TEntity : class, IEntity<T>
+    public abstract class Repository<TEntity,T> : IRepository<TEntity,T> where TEntity : class, IEntity<T>
     {
 
         protected DbContext _context;
-
-        //public Repository(DbContext Context)
-        //{
-        //    _context = Context;
-        //}
 
         public virtual TEntity Get(T Id)
         {

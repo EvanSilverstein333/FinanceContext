@@ -8,11 +8,8 @@ using Domain.Entities;
 
 namespace Persistance.Repositories
 {
-    public class FinancialTransactionRepository: Repository<FinancialTransaction,Guid>
+    public class FinancialTransactionRepository: Repository<FinancialTransaction,Guid>, IFinancialTransactionRepository
     {
-        //public FinancialTransactionRepository(DbContext context):base(context)
-        //{
-        //}
         public FinancialTransaction[] GetByAccountId(Guid accountId)
         {
             return _context.Set<FinancialTransaction>().Where(x => x.AccountId == accountId).ToArray();

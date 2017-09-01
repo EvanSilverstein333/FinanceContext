@@ -8,11 +8,8 @@ using System.Data.Entity;
 
 namespace Persistance.Repositories
 {
-    public class FinancialAccountRepository:Repository<FinancialAccount,Guid>
+    public class FinancialAccountRepository:Repository<FinancialAccount,Guid>, IFinancialAccountRepository
     {
-        //public FinancialAccountRepository(DbContext context) : base(context)
-        //{
-        //}
 
         public FinancialAccount GetWithTransactions(Guid accountId)
         {

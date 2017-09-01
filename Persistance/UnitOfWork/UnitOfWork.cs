@@ -18,14 +18,14 @@ namespace Persistance.UnitOfWork
     public class UnitOfWork : IUnitOfWork, IDisposable
     {
         private readonly FinanceContext _context;
-        private FinancialAccountRepository _financialAccounts;
-        private FinancialTransactionRepository _financialTransactions;
+        private IFinancialAccountRepository _financialAccounts;
+        private IFinancialTransactionRepository _financialTransactions;
 
-        public FinancialAccountRepository FinancialAccounts { get { return _financialAccounts; } }
-        public FinancialTransactionRepository FinancialTransactions { get { return _financialTransactions; } }
+        public IFinancialAccountRepository FinancialAccounts { get { return _financialAccounts; } }
+        public IFinancialTransactionRepository FinancialTransactions { get { return _financialTransactions; } }
 
         
-        public UnitOfWork(FinanceContext context, FinancialAccountRepository accountRepo, FinancialTransactionRepository transactionRepo)
+        public UnitOfWork(FinanceContext context, IFinancialAccountRepository accountRepo, IFinancialTransactionRepository transactionRepo)
         {
             _context = context;
             _financialAccounts = accountRepo;
